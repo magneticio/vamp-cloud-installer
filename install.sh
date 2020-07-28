@@ -9,16 +9,16 @@ VAMP_INSTALLER_BOOTSTRAP_YAML=${DEFAULT_VAMP_BOOTSTRAP_YAML:=https://raw.githubu
 kubectl apply -f "$VAMP_INSTALLER_BOOTSTRAP_YAML"
 
 # Run nats-setup container containing the latest set of manifests.
-kubectl run vamp-installer --image-pull-policy=Always --serviceaccount=vamp-installer --image=$VAMP_INSTALLER_IMAGE --restart=Never
+kubectl run vamp-cloud-installer --image-pull-policy=Always --serviceaccount=vamp-cloud-installer --image=$VAMP_INSTALLER_IMAGE --restart=Never
 
 # Wait for the setup container to start or bail.
-kubectl wait --for=condition=Ready pod/vamp-installer --timeout=30s
+kubectl wait --for=condition=Ready pod/vamp-cloud-installer --timeout=30s
 
 # Pass the custom parameters to the nats-setup container image.
-kubectl exec vamp-installer -- vamp-installer.sh "$@"
+kubectl exec vamp-cloud-installer -- vamp-installer.sh "$@"
 
 # Remove the required policy for setup purposes.
 kubectl delete -f "$VAMP_INSTALLER_BOOTSTRAP_YAML"
 
 # Remove the setup pod.
-kubectl delete pod vamp-installer --grace-period=0 --force
+kubectl delete pod vamp-cloud-installer --grace-period=0 --force
