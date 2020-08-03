@@ -23,4 +23,4 @@ kubectl exec vamp-cloud-installer -- vamp-installer.sh "$@"
 kubectl delete -f "$VAMP_INSTALLER_BOOTSTRAP_YAML"
 
 # Remove the setup pod.
-kubectl delete pod vamp-cloud-installer --grace-period=0 --force
+kubectl delete pod vamp-cloud-installer --grace-period=30 --force
