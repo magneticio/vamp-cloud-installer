@@ -14,6 +14,8 @@ kubectl run vamp-cloud-installer --image-pull-policy=Always --serviceaccount=vam
 # Wait for the setup container to start or bail.
 kubectl wait --for=condition=Ready pod/vamp-cloud-installer --timeout=30s
 
+set +eu
+
 # Pass the custom parameters to the nats-setup container image.
 kubectl exec vamp-cloud-installer -- vamp-installer.sh "$@"
 
