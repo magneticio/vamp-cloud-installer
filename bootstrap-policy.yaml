@@ -93,3 +93,19 @@ rules:
   - clusterroles
   - clusterrolebindings
   verbs: ["create", "watch", "get", "update", "delete", "list", "patch"]
+
+# Allow CRDs
+- apiGroups: ["apiextensions.k8s.io"]
+  resources:
+  - customresourcedefinitions
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["vamp.io"]
+  resources:
+  - ingressshims
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]    
+
+# Allow access to metrics
+- apiGroups: ["metrics.k8s.io"]
+  resources:
+  - pods
+  verbs: ["get", "list"]
