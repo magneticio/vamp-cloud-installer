@@ -102,7 +102,10 @@ rules:
 - apiGroups: ["vamp.io"]
   resources:
   - ingressshims
-  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]    
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["projectcontour.io"]
+  resources: ["httpproxies"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 
 # Allow access to metrics
 - apiGroups: ["metrics.k8s.io"]
