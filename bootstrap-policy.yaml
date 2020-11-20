@@ -101,7 +101,7 @@ rules:
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["vamp.io"]
   resources:
-  - ingressshims
+  - ingressannotations
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["projectcontour.io"]
   resources: ["httpproxies"]
