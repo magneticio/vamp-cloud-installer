@@ -1,0 +1,33 @@
+version: "2.1"
+
+workflows:
+  smoke-test:
+    jobs:
+      - smoke-test
+
+jobs:
+  smoke-test:
+    docker:
+      - image: alpine:3.13
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk update && apk add bash
+
+            # We need bats 1.3.0 at least to be able to use
+            # `--report-formatter` and `--formatter` options.
+            #
+            # It's not great to rely on a package from edge, it could change any time.
+            #
+            # When the current Alpine release contains bats >= 1.3.0, `bats`
+            # should be added to the standard apk add above, and this should be
+            # removed.
+            echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories
+            apk add bats@testing
+      - run:
+          name: Test
+          command: bats --report-formatter junit --formatter tap test/
+      - store_test_results:
+          path: report.xml

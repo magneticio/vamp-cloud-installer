@@ -6,6 +6,15 @@ VAMP_INSTALLER_VERSION=1.9.2
 VAMP_INSTALLER_IMAGE=${DEFAULT_VAMP_INSTALLER_IMAGE:=vampio/k8s-installer:$VAMP_INSTALLER_VERSION}
 VAMP_INSTALLER_BOOTSTRAP_YAML=${DEFAULT_VAMP_BOOTSTRAP_YAML:=https://raw.githubusercontent.com/magneticio/vamp-cloud-installer/master/bootstrap-policy.yaml}
 
+# A shell script can only have a single trap set for each signal, including the
+# EXIT pseudosignal. All cleanup needs to be handled by this function.
+cleanup() {
+  kubectl delete -f "$VAMP_INSTALLER_BOOTSTRAP_YAML" || true
+  kubectl delete pod vamp-cloud-installer || true
+}
+
+trap cleanup EXIT
+
 echo "Vamp Cloud Installer: $VAMP_INSTALLER_VERSION"
 
 # Apply policy required to be able to create the resources.
@@ -17,13 +26,5 @@ kubectl run vamp-cloud-installer --image-pull-policy=Always --serviceaccount=vam
 # Wait for the setup container to start or bail.
 kubectl wait --for=condition=Ready pod/vamp-cloud-installer --timeout=30s
 
-set +eu
-
 # Pass the custom parameters to the nats-setup container image.
 kubectl exec vamp-cloud-installer -- vamp-installer.sh -v "$VAMP_INSTALLER_VERSION" "$@"
-
-# Remove the required policy for setup purposes.
-kubectl delete -f "$VAMP_INSTALLER_BOOTSTRAP_YAML"
-
-# Remove the setup pod.
-kubectl delete pod vamp-cloud-installer
