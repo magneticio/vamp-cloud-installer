@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Fake `kubectl` script used for testing install.sh
+# 
+# This script will exit 0 for all kubectl commands, with the exception of `kubectl exec`.
+# It makes use of the extra arguments that can be passed to install.sh which
+# are passed through to `kubectl exec` to allow control over the exit code.
+
+_command=$1
+shift
+
+case "${_command}" in
+  exec)
+    _extra_args=$6
+    if [ "XfailX" = "X${_extra_args}X" ]; then
+      exit 1
+    fi
+    exit 0
+    ;;
+  *)
+    exit 0
+    ;;
+esac
