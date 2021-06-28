@@ -2,7 +2,7 @@
 
 set -eu
 
-VAMP_INSTALLER_VERSION=1.10.1
+VAMP_INSTALLER_VERSION=1.11.0
 VAMP_INSTALLER_IMAGE=${DEFAULT_VAMP_INSTALLER_IMAGE:=vampio/k8s-installer:$VAMP_INSTALLER_VERSION}
 VAMP_INSTALLER_BOOTSTRAP_YAML=${DEFAULT_VAMP_BOOTSTRAP_YAML:=https://raw.githubusercontent.com/magneticio/vamp-cloud-installer/master/bootstrap-policy.yaml}
 
