@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -eu
-VAMP_INSTALLER_VERSION=3.0.3
+VAMP_INSTALLER_VERSION=v3.0.4
 VAMP_INSTALLER_IMAGE=${DEFAULT_VAMP_INSTALLER_IMAGE:=vampio/k8s-installer:$VAMP_INSTALLER_VERSION}
 VAMP_INSTALLER_BOOTSTRAP_YAML=${DEFAULT_VAMP_BOOTSTRAP_YAML:=https://raw.githubusercontent.com/magneticio/vamp-cloud-installer/master/bootstrap-policy.yaml}
 
