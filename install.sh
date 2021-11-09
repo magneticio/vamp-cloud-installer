@@ -21,7 +21,19 @@ echo "Vamp Cloud Installer: $VAMP_INSTALLER_VERSION"
 kubectl apply -f "$VAMP_INSTALLER_BOOTSTRAP_YAML"
 
 # Run nats-setup container containing the latest set of manifests.
-kubectl run vamp-cloud-installer --image-pull-policy=Always --serviceaccount=vamp-cloud-installer --image=$VAMP_INSTALLER_IMAGE --restart=Never
+kubectl apply -f - << _EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vamp-cloud-installer
+spec:
+  containers:
+  - name: vamp-cloud-installer
+    image: $VAMP_INSTALLER_IMAGE
+    imagePullPolicy: Always
+  restartPolicy: Never
+  serviceAccount: vamp-cloud-installer
+_EOF
 
 # Wait for the setup container to start or bail.
 kubectl wait --for=condition=Ready pod/vamp-cloud-installer --timeout=30s
