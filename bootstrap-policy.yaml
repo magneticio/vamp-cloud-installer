@@ -102,6 +102,7 @@ rules:
 - apiGroups: ["vamp.io"]
   resources:
   - ingressannotations
+  - ingressannotations/status
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["projectcontour.io"]
   resources: ["httpproxies"]
